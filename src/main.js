@@ -3,6 +3,10 @@ const table = document.querySelector(".table");
 const tbody = table.querySelector("tbody");
 const cancelar = document.querySelector(".cancelar");
 
+const buscarPaciente = document.querySelector("#buscarPaciente");
+const btnBuscar = document.querySelector("#btnBuscar");
+const btnMostrarTodos = document.querySelector("#btnMostrarTodos");
+
 let pacienteEditando = null;
 
 function handleSubmit(e) {
@@ -217,5 +221,50 @@ cancelar.style.display = "none";
 
 form.querySelector("button[type='submit']").textContent =
     "Guardar paciente";
+
+});
+
+function buscarPacientes() {
+
+const nombreBuscado = buscarPaciente.value
+    .toLowerCase()
+    .trim();
+
+const filas = tbody.querySelectorAll("tr");
+
+filas.forEach(function(fila) {
+
+    const nombrePaciente = fila.children[0].textContent
+        .toLowerCase();
+
+    if (nombrePaciente.includes(nombreBuscado)) {
+
+        fila.style.display = "";
+
+    } else {
+
+        fila.style.display = "none";
+
+    }
+
+});
+
+}
+
+btnBuscar.addEventListener("click", buscarPacientes);
+
+buscarPaciente.addEventListener("input", buscarPacientes);
+
+btnMostrarTodos.addEventListener("click", function() {
+
+buscarPaciente.value = "";
+
+const filas = tbody.querySelectorAll("tr");
+
+filas.forEach(function(fila) {
+
+    fila.style.display = "";
+
+});
 
 });
