@@ -1,187 +1,194 @@
 const form = document.querySelector(".form");
-const tbody = document.querySelector(".table tbody");
+const tbody = document.querySelector("tbody");
 const cancelar = document.querySelector(".cancelar");
 
-const buscar = document.querySelector("#buscarPaciente");
-const btnBuscar = document.querySelector("#btnBuscar");
-const btnTodos = document.querySelector("#btnMostrarTodos");
-
-const enfermera = document.querySelector("#nombreEnfermera");
-const turno = document.querySelector("#turnoEnfermera");
-const btnMisPacientes = document.querySelector("#btnMisPacientes");
-const btnTodosEnfermeria =
-document.querySelector("#btnMostrarTodosEnfermeria");
+const inicio = document.querySelector("#inicio");
+const administracion = document.querySelector("#administracion");
+const enfermeria = document.querySelector("#enfermeria");
 
 let pacienteEditando = null;
 
-function crearPaciente() {
 
-const horarios = [...form.querySelectorAll(
-    'input[name="horario"]:checked'
-)].map(input => input.value);
+// CAMBIAR DE ÁREA
 
-return {
-    nombre: form.nombre.value,
-    edad: form.edad.value,
-    sexo: form.sexo.value,
-    medicamento: form.medicamento.value,
-    horario: horarios,
-    enfermera: form.enfermera.value,
-    turno: form.turno.value,
-    observacion: form.observacion.value
+btnAdministracion.onclick = () => {
+    inicio.classList.add("oculto");
+    administracion.classList.remove("oculto");
 };
 
-}
+btnEnfermeria.onclick = () => {
+    inicio.classList.add("oculto");
+    enfermeria.classList.remove("oculto");
+};
 
-function mostrarPaciente(p) {
+volverAdministracion.onclick = () => {
+    administracion.classList.add("oculto");
+    inicio.classList.remove("oculto");
+};
 
-return `
-    <td>${p.nombre}</td>
-    <td>${p.edad}</td>
-    <td>${p.sexo}</td>
-    <td>${p.medicamento}</td>
-    <td>${p.horario.join(", ")}</td>
-    <td>${p.enfermera}</td>
-    <td>${p.turno}</td>
-    <td>${p.observacion}</td>
+volverEnfermeria.onclick = () => {
+    enfermeria.classList.add("oculto");
+    inicio.classList.remove("oculto");
+};
 
-    <td>
-        <button type="button" class="editar">Editar</button>
-        <button type="button" class="eliminar">Eliminar</button>
-    </td>
-`;
 
-}
+// GUARDAR PACIENTE
 
 form.addEventListener("submit", function(e) {
 
-e.preventDefault();
+    e.preventDefault();
 
-const paciente = crearPaciente();
+    const horarios = [...form.querySelectorAll(
+        'input[name="horario"]:checked'
+    )].map(x => x.value);
 
-if (pacienteEditando) {
+    const paciente = {
+        nombre: form.nombre.value,
+        edad: form.edad.value,
+        sexo: form.sexo.value,
+        medicamento: form.medicamento.value,
+        horario: horarios.join(", "),
+        enfermera: form.enfermera.value,
+        turno: form.turno.value,
+        observacion: form.observacion.value
+    };
 
-    pacienteEditando.innerHTML = mostrarPaciente(paciente);
-    pacienteEditando = null;
-    cancelar.style.display = "none";
+    const fila = `
+        <td>${paciente.nombre}</td>
+        <td>${paciente.edad}</td>
+        <td>${paciente.sexo}</td>
+        <td>${paciente.medicamento}</td>
+        <td>${paciente.horario}</td>
+        <td>${paciente.enfermera}</td>
+        <td>${paciente.turno}</td>
+        <td>${paciente.observacion}</td>
 
-} else {
-
-    tbody.innerHTML += `
-        <tr>${mostrarPaciente(paciente)}</tr>
+        <td>
+            <button class="editar">Editar</button>
+            <button class="eliminar">Eliminar</button>
+        </td>
     `;
 
-}
+    if (pacienteEditando) {
 
-form.reset();
+        pacienteEditando.innerHTML = fila;
+        pacienteEditando = null;
+
+        cancelar.style.display = "none";
+
+    } else {
+
+        tbody.innerHTML += `<tr>${fila}</tr>`;
+
+    }
+
+    form.reset();
 
 });
+
+
+// EDITAR Y ELIMINAR
 
 tbody.addEventListener("click", function(e) {
 
-const fila = e.target.closest("tr");
+    const fila = e.target.closest("tr");
 
-if (e.target.classList.contains("eliminar")) {
-    fila.remove();
-}
+    if (e.target.classList.contains("eliminar")) {
+        fila.remove();
+    }
 
-if (e.target.classList.contains("editar")) {
+    if (e.target.classList.contains("editar")) {
 
-    pacienteEditando = fila;
+        pacienteEditando = fila;
 
-    form.nombre.value = fila.children[0].textContent;
-    form.edad.value = fila.children[1].textContent;
-    form.medicamento.value = fila.children[3].textContent;
-    form.enfermera.value = fila.children[5].textContent;
-    form.turno.value = fila.children[6].textContent;
-    form.observacion.value = fila.children[7].textContent;
+        form.nombre.value = fila.children[0].textContent;
+        form.edad.value = fila.children[1].textContent;
+        form.medicamento.value = fila.children[3].textContent;
+        form.enfermera.value = fila.children[5].textContent;
+        form.turno.value = fila.children[6].textContent;
+        form.observacion.value = fila.children[7].textContent;
 
-    form.querySelectorAll('input[name="sexo"]')
-        .forEach(input => {
-            input.checked =
-                input.value === fila.children[2].textContent;
+        form.querySelectorAll('input[name="sexo"]').forEach(x => {
+            x.checked = x.value === fila.children[2].textContent;
         });
 
-    const horarios =
-        fila.children[4].textContent.split(", ");
+        const horarios = fila.children[4].textContent.split(", ");
 
-    form.querySelectorAll('input[name="horario"]')
-        .forEach(input => {
-            input.checked = horarios.includes(input.value);
+        form.querySelectorAll('input[name="horario"]').forEach(x => {
+            x.checked = horarios.includes(x.value);
         });
 
-    cancelar.style.display = "block";
-    form.querySelector("button[type='submit']")
-        .textContent = "Actualizar paciente";
-}
+        cancelar.style.display = "block";
+
+        form.querySelector("button[type='submit']").textContent =
+            "Actualizar paciente";
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
 
 });
 
-cancelar.addEventListener("click", function() {
 
-pacienteEditando = null;
-form.reset();
-cancelar.style.display = "none";
+// CANCELAR ACTUALIZACIÓN
 
-form.querySelector("button[type='submit']")
-    .textContent = "Guardar paciente";
+cancelar.onclick = () => {
 
-});
+    pacienteEditando = null;
 
-function buscarPacientes() {
+    form.reset();
 
-const texto = buscar.value.toLowerCase().trim();
+    cancelar.style.display = "none";
 
-tbody.querySelectorAll("tr").forEach(fila => {
+    form.querySelector("button[type='submit']").textContent =
+        "Guardar paciente";
+};
 
-    const nombre =
-        fila.children[0].textContent.toLowerCase();
 
-    fila.style.display =
-        nombre.includes(texto) ? "" : "none";
-});
+// BUSCAR PACIENTE
 
-}
+btnBuscar.onclick = () => {
 
-btnBuscar.addEventListener("click", buscarPacientes);
-buscar.addEventListener("input", buscarPacientes);
+    const texto = buscarPaciente.value.toLowerCase();
 
-btnTodos.addEventListener("click", function() {
+    tbody.querySelectorAll("tr").forEach(fila => {
 
-buscar.value = "";
+        fila.style.display =
+            fila.children[0].textContent.toLowerCase().includes(texto)
+                ? ""
+                : "none";
 
-tbody.querySelectorAll("tr").forEach(fila => {
-    fila.style.display = "";
-});
+    });
 
-});
+};
 
-btnMisPacientes.addEventListener("click", function() {
+btnMostrarTodos.onclick = () => {
 
-const nombre = enfermera.value.toLowerCase().trim();
-const turnoActual = turno.value;
+    tbody.querySelectorAll("tr").forEach(fila => {
+        fila.style.display = "";
+    });
 
-tbody.querySelectorAll("tr").forEach(fila => {
+    buscarPaciente.value = "";
+};
 
-    const nombrePaciente =
-        fila.children[5].textContent.toLowerCase().trim();
 
-    const turnoPaciente =
-        fila.children[6].textContent;
+// PACIENTES DE LA ENFERMERA
 
-    fila.style.display =
-        nombrePaciente === nombre &&
-        turnoPaciente === turnoActual
-            ? ""
-            : "none";
-});
+btnMisPacientes.onclick = () => {
 
-});
+    const nombre = nombreEnfermera.value.toLowerCase().trim();
+    const turno = turnoEnfermera.value;
 
-btnTodosEnfermeria.addEventListener("click", function() {
+    tbody.querySelectorAll("tr").forEach(fila => {
 
-tbody.querySelectorAll("tr").forEach(fila => {
-    fila.style.display = "";
-});
+        const enfermera = fila.children[5]
+            .textContent.toLowerCase().trim();
 
-});
+        const turnoPaciente = fila.children[6].textContent;
+
+        fila.style.display =
+            enfermera === nombre && turnoPaciente === turno
+                ? ""
+                : "none";
+    });
+
+};
