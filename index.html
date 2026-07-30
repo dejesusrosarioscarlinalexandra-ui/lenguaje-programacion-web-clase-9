@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="es">
+<<!DOCTYPE html><html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -132,11 +132,56 @@
 
 </form>
 
-<div class="buscador"><input
+<div class="buscador"><h2>Buscar paciente</h2>
+
+<input
     type="text"
     id="buscarPaciente"
     placeholder="Buscar paciente por nombre"
 >
+
+<button
+    type="button"
+    id="btnBuscar"
+>
+    Buscar
+</button>
+
+<button
+    type="button"
+    id="btnMostrarTodos"
+>
+    Mostrar todos
+</button>
+
+</div><div class="buscador"><h2>Pacientes de la enfermera</h2>
+
+<input
+    type="text"
+    id="nombreEnfermera"
+    placeholder="Nombre de la enfermera"
+>
+
+<select id="turnoEnfermera">
+
+    <option value="">Seleccionar turno</option>
+
+    <option value="Mañana">Mañana</option>
+
+    <option value="Tarde">Tarde</option>
+
+    <option value="Noche">Noche</option>
+
+</select>
+
+<button
+    type="button"
+    id="btnMisPacientes"
+>
+    Ver mis pacientes
+</button>
+
+</div>
 
 <button
     type="button"
