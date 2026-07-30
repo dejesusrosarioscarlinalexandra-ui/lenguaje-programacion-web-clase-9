@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formularios</title>
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <main class="main">
+      <h1 class="main__title">Manejo de formularios</h1>
+
+      <section class="input">
+        <form class="form">
+
+          <input type="text" name="fname" placeholder="Ingresa tu nombre" />
+
+          <input type="text" name="lname" placeholder="Ingresa tu apellido" />
+
+          <input type="number" name="age" placeholder="Ingresa tu edad" />
+
+          <fieldset>
+            <input type="radio" name="gender" value="F" checked /> Femenina
+            <input type="radio" name="gender" value="M" /> Masculino
+          </fieldset>
+
+          <fieldset>
+            <input type="checkbox" name="hobbies" value="Programar" /> Programar
+            <input type="checkbox" name="hobbies" value="Leer" /> Leer
+            <input type="checkbox" name="hobbies" value="Jugar" /> Jugar videojuegos
+          </fieldset>
+
+          <select name="nationality">
+            <option value="Dominicana">Dominicana</option>
+            <option value="Venezolana">Venezolana</option>
+            <option value="Haitiana">Haitiana</option>
+            <option value="Colombiana">Colombiana</option>
+          </select>
+
+          <textarea
+            name="comments"
+            placeholder="Escribe un comentario"
+          ></textarea>
+
+          <button type="submit">Ingresar</button>
+
+        </form>
+      </section>
+
+      <section class="output">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Edad</th>
+              <th>Género</th>
+              <th>Hobbies</th>
+              <th>Nacionalidad</th>
+            </tr>
+          </thead>
+
+         <tbody></tbody>
+
+        </table>
+      </section>
+
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
