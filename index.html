@@ -1,226 +1,212 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control de Pacientes</title>
     <link rel="stylesheet" href="./src/style.css">
-</head><body><h1>Control de Pacientes</h1>
+</head>
+
+<body>
+
+<h1>Control de Pacientes</h1>
 
 <p class="subtitulo">
     Administración de pacientes y medicamentos
 </p>
 
-<form class="form">
+<section class="panel">
+    <h2>Área de Administración</h2>
+
+    <form class="form">
+
+        <input
+            type="text"
+            name="nombre"
+            placeholder="Nombre del paciente"
+            required
+        >
+
+        <input
+            type="number"
+            name="edad"
+            placeholder="Edad"
+            required
+        >
+
+        <fieldset>
+
+            <legend>Sexo</legend>
+
+            <label>
+                <input
+                    type="radio"
+                    name="sexo"
+                    value="Femenino"
+                    checked
+                >
+                Femenino
+            </label>
+
+            <label>
+                <input
+                    type="radio"
+                    name="sexo"
+                    value="Masculino"
+                >
+                Masculino
+            </label>
+
+        </fieldset>
+
+        <select name="medicamento">
+
+            <option value="Paracetamol">Paracetamol</option>
+            <option value="Ibuprofeno">Ibuprofeno</option>
+            <option value="Amoxicilina">Amoxicilina</option>
+            <option value="Omeprazol">Omeprazol</option>
+
+        </select>
+
+        <fieldset>
+
+            <legend>Horario del medicamento</legend>
+
+            <label>
+                <input type="checkbox" name="horario" value="Mañana">
+                Mañana
+            </label>
+
+            <label>
+                <input type="checkbox" name="horario" value="Tarde">
+                Tarde
+            </label>
+
+            <label>
+                <input type="checkbox" name="horario" value="Noche">
+                Noche
+            </label>
+
+            <label>
+                <input type="checkbox" name="horario" value="Madrugada">
+                Madrugada
+            </label>
+
+        </fieldset>
+
+        <input
+            type="text"
+            name="enfermera"
+            placeholder="Nombre de la enfermera"
+            required
+        >
+
+        <select name="turno">
+
+            <option value="Mañana">Turno de mañana</option>
+            <option value="Tarde">Turno de tarde</option>
+            <option value="Noche">Turno de noche</option>
+            <option value="Madrugada">Turno de madrugada</option>
+
+        </select>
+
+        <textarea
+            name="observacion"
+            placeholder="Observaciones"
+        ></textarea>
+
+        <button type="submit">
+            Guardar paciente
+        </button>
+
+        <button
+            type="button"
+            class="cancelar"
+            style="display: none;"
+        >
+            Cancelar actualización
+        </button>
+
+    </form>
+
+    <div class="buscador">
+
+        <h2>Buscar paciente</h2>
+
+        <input
+            type="text"
+            id="buscarPaciente"
+            placeholder="Nombre del paciente"
+        >
+
+        <button type="button" id="btnBuscar">
+            Buscar
+        </button>
+
+        <button type="button" id="btnMostrarTodos">
+            Mostrar todos
+        </button>
+
+    </div>
+
+</section>
+
+<section class="panel">
+
+    <h2>Área de Enfermería</h2>
+
+    <p>
+        Consulta los pacientes asignados a tu turno.
+    </p>
 
     <input
         type="text"
-        name="nombre"
-        placeholder="Nombre del paciente"
-        required
-    >
-
-    <input
-        type="number"
-        name="edad"
-        placeholder="Edad"
-        required
-    >
-
-    <fieldset>
-
-        <legend>Sexo</legend>
-
-        <label>
-            <input
-                type="radio"
-                name="sexo"
-                value="Femenino"
-                checked
-            >
-            Femenino
-        </label>
-
-        <label>
-            <input
-                type="radio"
-                name="sexo"
-                value="Masculino"
-            >
-            Masculino
-        </label>
-
-    </fieldset>
-
-    <select name="medicamento">
-
-        <option value="Paracetamol">Paracetamol</option>
-
-        <option value="Ibuprofeno">Ibuprofeno</option>
-
-        <option value="Amoxicilina">Amoxicilina</option>
-
-        <option value="Omeprazol">Omeprazol</option>
-
-    </select>
-
-    <fieldset>
-
-        <legend>Horario del medicamento</legend>
-
-        <label>
-            <input
-                type="checkbox"
-                name="horario"
-                value="Mañana"
-            >
-            Mañana
-        </label>
-
-        <label>
-            <input
-                type="checkbox"
-                name="horario"
-                value="Tarde"
-            >
-            Tarde
-        </label>
-
-        <label>
-            <input
-                type="checkbox"
-                name="horario"
-                value="Noche"
-            >
-            Noche
-        </label>
-
-    </fieldset>
-
-    <input
-        type="text"
-        name="enfermera"
+        id="nombreEnfermera"
         placeholder="Nombre de la enfermera"
-        required
     >
 
-    <select name="turno">
+    <select id="turnoEnfermera">
 
-        <option value="Mañana">Turno de mañana</option>
-
-        <option value="Tarde">Turno de tarde</option>
-
-        <option value="Noche">Turno de noche</option>
+        <option value="">Seleccionar turno</option>
+        <option value="Mañana">Mañana</option>
+        <option value="Tarde">Tarde</option>
+        <option value="Noche">Noche</option>
+        <option value="Madrugada">Madrugada</option>
 
     </select>
-
-    <textarea
-        name="observacion"
-        placeholder="Observaciones"
-    ></textarea>
-
-    <button type="submit">
-        Guardar paciente
-    </button>
 
     <button
         type="button"
-        class="cancelar"
-        style="display: none;"
+        id="btnMisPacientes"
     >
-        Cancelar actualización
+        Ver mis pacientes
     </button>
 
-</form>
+</section>
 
-<div class="buscador"><h2>Buscar paciente</h2>
+<table class="table">
 
-<input
-    type="text"
-    id="buscarPaciente"
-    placeholder="Buscar paciente por nombre"
->
+    <thead>
 
-<button
-    type="button"
-    id="btnBuscar"
->
-    Buscar
-</button>
+        <tr>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Sexo</th>
+            <th>Medicamento</th>
+            <th>Horario</th>
+            <th>Enfermera</th>
+            <th>Turno</th>
+            <th>Observación</th>
+            <th>Acción</th>
+        </tr>
 
-<button
-    type="button"
-    id="btnMostrarTodos"
->
-    Mostrar todos
-</button>
+    </thead>
 
-</div><div class="buscador"><h2>Pacientes de la enfermera</h2>
-
-<input
-    type="text"
-    id="nombreEnfermera"
-    placeholder="Nombre de la enfermera"
->
-
-<select id="turnoEnfermera">
-
-    <option value="">Seleccionar turno</option>
-
-    <option value="Mañana">Mañana</option>
-
-    <option value="Tarde">Tarde</option>
-
-    <option value="Noche">Noche</option>
-
-</select>
-
-<button
-    type="button"
-    id="btnMisPacientes"
->
-    Ver mis pacientes
-</button>
-
-</div>
-
-<button
-    type="button"
-    id="btnBuscar"
->
-    Buscar
-</button>
-
-<button
-    type="button"
-    id="btnMostrarTodos"
->
-    Mostrar todos
-</button>
-
-</div>
-
-    <table class="table">
-      <thead>
-
-    <tr>
-        <th>Nombre</th>
-        <th>Edad</th>
-        <th>Sexo</th>
-        <th>Medicamento</th>
-        <th>Horario</th>
-        <th>Enfermera</th>
-        <th>Turno</th>
-        <th>Observación</th>
-        <th>Acción</th>
-    </tr>
-
-</thead>
-
-<tbody>
-</tbody>
+    <tbody>
+    </tbody>
 
 </table>
-    
 
 <script type="module" src="./src/main.js"></script>
 
