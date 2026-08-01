@@ -6,6 +6,19 @@ const inicio = document.querySelector("#inicio");
 const administracion = document.querySelector("#administracion");
 const enfermeria = document.querySelector("#enfermeria");
 
+const btnAdministracion = document.querySelector("#btnAdministracion");
+const btnEnfermeria = document.querySelector("#btnEnfermeria");
+const volverAdministracion = document.querySelector("#volverAdministracion");
+const volverEnfermeria = document.querySelector("#volverEnfermeria");
+
+const btnBuscar = document.querySelector("#btnBuscar");
+const btnMostrarTodos = document.querySelector("#btnMostrarTodos");
+const buscarPaciente = document.querySelector("#buscarPaciente");
+
+const nombreEnfermera = document.querySelector("#nombreEnfermera");
+const turnoEnfermera = document.querySelector("#turnoEnfermera");
+const btnMisPacientes = document.querySelector("#btnMisPacientes");
+
 let pacienteEditando = null;
 
 
@@ -183,10 +196,10 @@ btnMisPacientes.onclick = () => {
 
     tbody.querySelectorAll("tr").forEach(fila => {
 
-        const enfermera = fila.children[5]
+        const enfermera = fila.children[6]
             .textContent.toLowerCase().trim();
 
-        const turnoPaciente = fila.children[6].textContent;
+        const turnoPaciente = fila.children[7].textContent;
 
         fila.style.display =
             enfermera === nombre && turnoPaciente === turno
