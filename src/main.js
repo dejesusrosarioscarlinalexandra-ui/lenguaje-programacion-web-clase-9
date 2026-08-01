@@ -43,8 +43,9 @@ form.addEventListener("submit", function(e) {
     )].map(x => x.value);
 
     const paciente = {
-        nombre: form.nombre.value,
+        nombre: form.nombre.valvue,
         edad: form.edad.value,
+        habitacion: form.habitacion.value,
         sexo: form.sexo.value,
         medicamento: form.medicamento.value,
         horario: horarios.join(", "),
@@ -56,6 +57,7 @@ form.addEventListener("submit", function(e) {
     const fila = `
         <td>${paciente.nombre}</td>
         <td>${paciente.edad}</td>
+        <td>${paciente.habitacion}</td>
         <td>${paciente.sexo}</td>
         <td>${paciente.medicamento}</td>
         <td>${paciente.horario}</td>
@@ -103,13 +105,14 @@ tbody.addEventListener("click", function(e) {
 
         form.nombre.value = fila.children[0].textContent;
         form.edad.value = fila.children[1].textContent;
-        form.medicamento.value = fila.children[3].textContent;
+        form.habitacion.value = fila.children[2].textContent;
+        form.medicamento.value = fila.children[4].textContent;
         form.enfermera.value = fila.children[5].textContent;
         form.turno.value = fila.children[6].textContent;
         form.observacion.value = fila.children[7].textContent;
 
         form.querySelectorAll('input[name="sexo"]').forEach(x => {
-            x.checked = x.value === fila.children[2].textContent;
+            x.checked = x.value === fila.children[3].textContent;
         });
 
         const horarios = fila.children[4].textContent.split(", ");
