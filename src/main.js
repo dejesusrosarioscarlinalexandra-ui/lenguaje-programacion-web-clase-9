@@ -1,210 +1,221 @@
-const form = document.querySelector(".form");
-const tbody = document.querySelector("tbody");
-const cancelar = document.querySelector(".cancelar");
+const formulario = document.getElementById("formularioPedido");
+const listaPedidos = document.getElementById("listaPedidos");
+const buscar = document.getElementById("buscar");
+const mensaje = document.getElementById("mensaje");
+const sinPedidos = document.getElementById("sinPedidos");
 
-const inicio = document.querySelector("#inicio");
-const administracion = document.querySelector("#administracion");
-const enfermeria = document.querySelector("#enfermeria");
+const totalPedidos = document.getElementById("totalPedidos");
+const pedidosPendientes = document.getElementById("pedidosPendientes");
+const pedidosEntregados = document.getElementById("pedidosEntregados");
 
-const btnAdministracion = document.querySelector("#btnAdministracion");
-const btnEnfermeria = document.querySelector("#btnEnfermeria");
-const volverAdministracion = document.querySelector("#volverAdministracion");
-const volverEnfermeria = document.querySelector("#volverEnfermeria");
+const estados = [
+    "Pendiente",
+    "En preparación",
+    "Listo",
+    "Entregado"
+];
 
-const btnBuscar = document.querySelector("#btnBuscar");
-const btnMostrarTodos = document.querySelector("#btnMostrarTodos");
-const buscarPaciente = document.querySelector("#buscarPaciente");
+// Recuperar los pedidos guardados en el navegador.
+let pedidos = [];
 
-const nombreEnfermera = document.querySelector("#nombreEnfermera");
-const turnoEnfermera = document.querySelector("#turnoEnfermera");
-const btnMisPacientes = document.querySelector("#btnMisPacientes");
+try {
+    const datosGuardados = localStorage.getItem("pedidosFloridulce");
+    pedidos = datosGuardados ? JSON.parse(datosGuardados) : [];
 
-let pacienteEditando = null;
+    if (!Array.isArray(pedidos)) {
+        pedidos = [];
+    }
+} catch (error) {
+    pedidos = [];
+}
 
+function guardarPedidos() {
+    try {
+        localStorage.setItem("pedidosFloridulce", JSON.stringify(pedidos));
+        return true;
+    } catch (error) {
+        mensaje.textContent =
+            "No se pudieron guardar los datos en el navegador.";
+        return false;
+    }
+}
 
-// CAMBIAR DE ÁREA
+function crearCelda(texto) {
+    const celda = document.createElement("td");
+    celda.textContent = texto;
+    return celda;
+}
 
-btnAdministracion.onclick = () => {
-    inicio.classList.add("oculto");
-    administracion.classList.remove("oculto");
-};
+function mostrarPedidos() {
+    listaPedidos.replaceChildren();
 
-btnEnfermeria.onclick = () => {
-    inicio.classList.add("oculto");
-    enfermeria.classList.remove("oculto");
-};
+    const textoBusqueda = buscar.value.trim().toLowerCase();
 
-volverAdministracion.onclick = () => {
-    administracion.classList.add("oculto");
-    inicio.classList.remove("oculto");
-};
+    const pedidosFiltrados = pedidos.filter(function(pedido) {
+        return pedido.cliente.toLowerCase().includes(textoBusqueda);
+    });
 
-volverEnfermeria.onclick = () => {
-    enfermeria.classList.add("oculto");
-    inicio.classList.remove("oculto");
-};
+    pedidosFiltrados.forEach(function(pedido) {
+        const fila = document.createElement("tr");
 
+        fila.appendChild(crearCelda(pedido.id));
+        fila.appendChild(crearCelda(pedido.cliente));
+        fila.appendChild(crearCelda(pedido.descripcion));
+        fila.appendChild(crearCelda(pedido.fechaEntrega));
 
-// GUARDAR PACIENTE
+        fila.appendChild(
+            crearCelda(
+                Number(pedido.precio).toLocaleString("es-DO", {
+                    style: "currency",
+                    currency: "DOP"
+                })
+            )
+        );
 
-form.addEventListener("submit", function(e) {
+        const celdaEstado = document.createElement("td");
+        const selector = document.createElement("select");
+        selector.setAttribute("aria-label", "Estado del pedido " + pedido.id);
 
-    e.preventDefault();
+        estados.forEach(function(estado) {
+            const opcion = document.createElement("option");
+            opcion.value = estado;
+            opcion.textContent = estado;
 
-    const horarios = [...form.querySelectorAll(
-        'input[name="horario"]:checked'
-    )].map(x => x.value);
+            if (estado === pedido.estado) {
+                opcion.selected = true;
+            }
 
-    const paciente = {
-        nombre: form.nombre.value,
-        edad: form.edad.value,
-        habitacion: form.habitacion.value,
-        sexo: form.sexo.value,
-        medicamento: form.medicamento.value,
-        horario: horarios.join(", "),
-        enfermera: form.enfermera.value,
-        turno: form.turno.value,
-        observacion: form.observacion.value
+            selector.appendChild(opcion);
+        });
+
+        selector.addEventListener("change", function() {
+            const estadoAnterior = pedido.estado;
+            pedido.estado = selector.value;
+
+            if (guardarPedidos()) {
+                mensaje.textContent = "Estado del pedido actualizado.";
+                actualizarPantalla();
+            } else {
+                pedido.estado = estadoAnterior;
+                selector.value = estadoAnterior;
+            }
+        });
+
+        celdaEstado.appendChild(selector);
+        fila.appendChild(celdaEstado);
+
+        const celdaAccion = document.createElement("td");
+        const botonEliminar = document.createElement("button");
+
+        botonEliminar.type = "button";
+        botonEliminar.textContent = "Eliminar";
+        botonEliminar.className = "boton";
+        botonEliminar.style.marginTop = "0";
+        botonEliminar.style.padding = "8px";
+
+        botonEliminar.addEventListener("click", function() {
+            const confirmar = window.confirm(
+                "¿Deseas eliminar el pedido de " + pedido.cliente + "?"
+            );
+
+            if (confirmar) {
+                const pedidosAnteriores = pedidos;
+                pedidos = pedidos.filter(function(item) {
+                    return item.id !== pedido.id;
+                });
+
+                if (guardarPedidos()) {
+                    mensaje.textContent = "Pedido eliminado correctamente.";
+                    actualizarPantalla();
+                } else {
+                    pedidos = pedidosAnteriores;
+                    actualizarPantalla();
+                }
+            }
+        });
+
+        celdaAccion.appendChild(botonEliminar);
+        fila.appendChild(celdaAccion);
+
+        listaPedidos.appendChild(fila);
+    });
+
+    sinPedidos.hidden = pedidosFiltrados.length > 0;
+}
+
+function actualizarResumen() {
+    totalPedidos.textContent = pedidos.length;
+
+    pedidosPendientes.textContent = pedidos.filter(function(pedido) {
+        return pedido.estado === "Pendiente";
+    }).length;
+
+    pedidosEntregados.textContent = pedidos.filter(function(pedido) {
+        return pedido.estado === "Entregado";
+    }).length;
+}
+
+function actualizarPantalla() {
+    mostrarPedidos();
+    actualizarResumen();
+}
+
+formulario.addEventListener("submit", function(evento) {
+    evento.preventDefault();
+
+    const cliente = document.getElementById("cliente").value.trim();
+    const telefono = document.getElementById("telefono").value.trim();
+    const direccion = document.getElementById("direccion").value.trim();
+    const descripcion = document.getElementById("descripcion").value.trim();
+    const fechaEntrega = document.getElementById("fechaEntrega").value;
+    const precio = Number(document.getElementById("precio").value);
+
+    if (!cliente || !telefono || !direccion || !descripcion || !fechaEntrega) {
+        mensaje.textContent = "Completa todos los campos.";
+        return;
+    }
+
+    if (!Number.isFinite(precio) || precio <= 0) {
+        mensaje.textContent = "El precio debe ser mayor que cero.";
+        return;
+    }
+
+    const nuevoPedido = {
+        id: Date.now().toString(),
+        cliente: cliente,
+        telefono: telefono,
+        direccion: direccion,
+        descripcion: descripcion,
+        fechaEntrega: fechaEntrega,
+        precio: precio,
+        estado: "Pendiente"
     };
 
-    const fila = `
-        <td>${paciente.nombre}</td>
-        <td>${paciente.edad}</td>
-        <td>${paciente.habitacion}</td>
-        <td>${paciente.sexo}</td>
-        <td>${paciente.medicamento}</td>
-        <td>${paciente.horario}</td>
-        <td>${paciente.enfermera}</td>
-        <td>${paciente.turno}</td>
-        <td>${paciente.observacion}</td>
+    pedidos.push(nuevoPedido);
 
-        <td>
-            <button class="editar">Editar</button>
-            <button class="eliminar">Eliminar</button>
-        </td>
-    `;
-
-    if (pacienteEditando) {
-
-        pacienteEditando.innerHTML = fila;
-        pacienteEditando = null;
-
-        cancelar.style.display = "none";
-
-    } else {
-
-        tbody.innerHTML += `<tr>${fila}</tr>`;
-
+    if (!guardarPedidos()) {
+        pedidos.pop();
+        return;
     }
 
-    form.reset();
+    formulario.reset();
+    mensaje.textContent = "¡Pedido registrado correctamente!";
 
+    actualizarPantalla();
 });
 
+buscar.addEventListener("input", mostrarPedidos);
 
-// EDITAR Y ELIMINAR
+// Evitar seleccionar una fecha anterior a hoy.
+const campoFecha = document.getElementById("fechaEntrega");
+const hoy = new Date();
+const fechaActual = [
+    hoy.getFullYear(),
+    String(hoy.getMonth() + 1).padStart(2, "0"),
+    String(hoy.getDate()).padStart(2, "0")
+].join("-");
 
-tbody.addEventListener("click", function(e) {
+campoFecha.min = fechaActual;
 
-    const fila = e.target.closest("tr");
-
-    if (e.target.classList.contains("eliminar")) {
-        fila.remove();
-    }
-
-    if (e.target.classList.contains("editar")) {
-
-        pacienteEditando = fila;
-
-        form.nombre.value = fila.children[0].textContent;
-        form.edad.value = fila.children[1].textContent;
-        form.habitacion.value = fila.children[2].textContent;
-        form.medicamento.value = fila.children[4].textContent;
-        form.enfermera.value = fila.children[6].textContent;
-        form.turno.value = fila.children[7].textContent;
-        form.observacion.value = fila.children[8].textContent;
-
-        form.querySelectorAll('input[name="sexo"]').forEach(x => {
-            x.checked = x.value === fila.children[3].textContent;
-        });
-
-        const horarios = fila.children[5].textContent.split(", ");
-
-        form.querySelectorAll('input[name="horario"]').forEach(x => {
-            x.checked = horarios.includes(x.value);
-        });
-
-        cancelar.style.display = "block";
-
-        form.querySelector("button[type='submit']").textContent =
-            "Actualizar paciente";
-
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-});
-
-
-// CANCELAR ACTUALIZACIÓN
-
-cancelar.onclick = () => {
-
-    pacienteEditando = null;
-
-    form.reset();
-
-    cancelar.style.display = "none";
-
-    form.querySelector("button[type='submit']").textContent =
-        "Guardar paciente";
-};
-
-
-// BUSCAR PACIENTE
-
-btnBuscar.onclick = () => {
-
-    const texto = buscarPaciente.value.toLowerCase();
-
-    tbody.querySelectorAll("tr").forEach(fila => {
-
-        fila.style.display =
-            fila.children[0].textContent.toLowerCase().includes(texto)
-                ? ""
-                : "none";
-
-    });
-
-};
-
-btnMostrarTodos.onclick = () => {
-
-    tbody.querySelectorAll("tr").forEach(fila => {
-        fila.style.display = "";
-    });
-
-    buscarPaciente.value = "";
-};
-
-
-// PACIENTES DE LA ENFERMERA
-
-btnMisPacientes.onclick = () => {
-
-    const nombre = nombreEnfermera.value.toLowerCase().trim();
-    const turno = turnoEnfermera.value;
-
-    tbody.querySelectorAll("tr").forEach(fila => {
-
-        const enfermera = fila.children[6]
-            .textContent.toLowerCase().trim();
-
-        const turnoPaciente = fila.children[7].textContent;
-
-        fila.style.display =
-            enfermera === nombre && turnoPaciente === turno
-                ? ""
-                : "none";
-    });
-
-};
+// Mostrar los pedidos guardados al abrir el sistema.
+actualizarPantalla();

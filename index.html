@@ -1,235 +1,132 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Control de Pacientes</title>
-
+    <title>Floridulce | Gestión de pedidos</title>
     <link rel="stylesheet" href="./src/style.css">
 </head>
-
 <body>
-
-<h1>Control de Pacientes</h1>
-
-<p class="subtitulo">
-    Administración de pacientes y medicamentos
-</p>
-
-<!-- SELECCIÓN DEL ÁREA -->
-
-<div class="panel" id="inicio">
-
-    <h2>Seleccione el área</h2>
-
-    <button type="button" id="btnAdministracion">
-        Administración
-    </button>
-
-    <button type="button" id="btnEnfermeria">
-        Enfermería
-    </button>
-
-</div>
-
-
-<!-- ÁREA DE ADMINISTRACIÓN -->
-
-<div class="panel oculto" id="administracion">
-
-    <h2>Área de Administración</h2>
-
-    <form class="form">
-
-        <input type="text" name="nombre"
-            placeholder="Nombre del paciente" required>
-
-        <input type="number" name="edad"
-            placeholder="Edad" required>
-
-            <input type="text" name="habitacion"
-            placeholder="Numero de habitacion" required>
-
-        <fieldset>
-
-            <legend>Sexo</legend>
-
-            <label>
-                <input type="radio" name="sexo"
-                    value="Femenino" checked>
-                Femenino
-            </label>
-
-            <label>
-                <input type="radio" name="sexo"
-                    value="Masculino">
-                Masculino
-            </label>
-
-        </fieldset>
-
-        <select name="medicamento">
-
-            <option value="Paracetamol">Paracetamol</option>
-            <option value="Ibuprofeno">Ibuprofeno</option>
-            <option value="Amoxicilina">Amoxicilina</option>
-            <option value="Omeprazol">Omeprazol</option>
-
-        </select>
-
-        <fieldset>
-
-            <legend>Horario del medicamento</legend>
-
-            <label>
-                <input type="checkbox"
-                    name="horario"
-                    value="Mañana">
-                Mañana
-            </label>
-
-            <label>
-                <input type="checkbox"
-                    name="horario"
-                    value="Tarde">
-                Tarde
-            </label>
-
-            <label>
-                <input type="checkbox"
-                    name="horario"
-                    value="Noche">
-                Noche
-            </label>
-
-            <label>
-                <input type="checkbox"
-                    name="horario"
-                    value="Madrugada">
-                Madrugada
-            </label>
-
-        </fieldset>
-
-        <input type="text"
-            name="enfermera"
-            placeholder="Nombre de la enfermera"
-            required>
-
-        <select name="turno">
-
-            <option value="Mañana">Mañana</option>
-            <option value="Tarde">Tarde</option>
-            <option value="Noche">Noche</option>
-            <option value="Madrugada">Madrugada</option>
-
-        </select>
-
-        <textarea
-            name="observacion"
-            placeholder="Observaciones">
-        </textarea>
-
-        <button type="submit">
-            Guardar paciente
-        </button>
-
-        <button type="button"
-            class="cancelar"
-            style="display:none;">
-            Cancelar actualización
-        </button>
-
-    </form>
-
-    <div class="buscador">
-
-        <h2>Buscar paciente</h2>
-
-        <input type="text"
-            id="buscarPaciente"
-            placeholder="Nombre del paciente">
-
-        <button type="button" id="btnBuscar">
-            Buscar
-        </button>
-
-        <button type="button" id="btnMostrarTodos">
-            Mostrar todos
-        </button>
-
-    </div>
-
-    <button type="button"
-        id="volverAdministracion">
-        Volver
-    </button>
-
-</div>
-
-
-<!-- ÁREA DE ENFERMERÍA -->
-
-<div class="panel oculto" id="enfermeria">
-
-    <h2>Área de Enfermería</h2>
-
-    <input type="text"
-        id="nombreEnfermera"
-        placeholder="Nombre de la enfermera">
-
-    <select id="turnoEnfermera">
-
-        <option value="">Seleccionar turno</option>
-        <option value="Mañana">Mañana</option>
-        <option value="Tarde">Tarde</option>
-        <option value="Noche">Noche</option>
-        <option value="Madrugada">Madrugada</option>
-
-    </select>
-
-    <button type="button"
-        id="btnMisPacientes">
-        Ver mis pacientes
-    </button>
-
-    <button type="button"
-        id="volverEnfermeria">
-        Volver
-    </button>
-
-</div>
-
-
-<!-- TABLA -->
-
-<table class="table">
-
-    <thead>
-
-        <tr>
-            <th>Nombre</th>
-            <th>Edad</th>
-            <th>Habitacion</th>
-            <th>Sexo</th>
-            <th>Medicamento</th>
-            <th>Horario</th>
-            <th>Enfermera</th>
-            <th>Turno</th>
-            <th>Observación</th>
-            <th>Acción</th>
-        </tr>
-
-    </thead>
-
-    <tbody></tbody>
-
-</table>
-
-
-<script type="module" src="./src/main.js"></script>
-
+    <header class="encabezado">
+        <div>
+            <h1>🌷 Floridulce</h1>
+            <p>Sistema de gestión y control de pedidos</p>
+        </div>
+        <span class="etiqueta">Versión inicial</span>
+    </header>
+
+    <nav class="menu">
+        <a href="#inicio">Inicio</a>
+        <a href="#registro">Registrar pedido</a>
+        <a href="#pedidos">Consultar pedidos</a>
+    </nav>
+
+    <main class="contenedor" id="inicio">
+        <section class="bienvenida">
+            <h2>Bienvenida a Floridulce</h2>
+            <p>
+                Administra los pedidos de la floristería desde un solo lugar.
+            </p>
+        </section>
+
+        <section class="resumen">
+            <article class="tarjeta">
+                <span>Total de pedidos</span>
+                <strong id="totalPedidos">0</strong>
+            </article>
+            <article class="tarjeta">
+                <span>Pendientes</span>
+                <strong id="pedidosPendientes">0</strong>
+            </article>
+            <article class="tarjeta">
+                <span>Entregados</span>
+                <strong id="pedidosEntregados">0</strong>
+            </article>
+        </section>
+
+        <section class="panel" id="registro">
+            <h2>Registrar nuevo pedido</h2>
+
+            <form id="formularioPedido">
+                <div class="campos">
+                    <div class="campo">
+                        <label for="cliente">Nombre del cliente</label>
+                        <input type="text" id="cliente" required
+                            placeholder="Nombre completo">
+                    </div>
+
+                    <div class="campo">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" required
+                            placeholder="Número de contacto">
+                    </div>
+
+                    <div class="campo ancho">
+                        <label for="direccion">Dirección de entrega</label>
+                        <input type="text" id="direccion" required
+                            placeholder="Dirección del cliente">
+                    </div>
+
+                    <div class="campo ancho">
+                        <label for="descripcion">Descripción del pedido</label>
+                        <textarea id="descripcion" required
+                            placeholder="Ej.: ramo de rosas rojas"></textarea>
+                    </div>
+
+                    <div class="campo">
+                        <label for="fechaEntrega">Fecha de entrega</label>
+                        <input type="date" id="fechaEntrega" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="precio">Precio del pedido (RD$)</label>
+                        <input type="number" id="precio" min="0.01"
+                            step="0.01" required placeholder="0.00">
+                    </div>
+                </div>
+
+                <button type="submit" class="boton">
+                    Registrar pedido
+                </button>
+                <p id="mensaje" role="status"></p>
+            </form>
+        </section>
+
+        <section class="panel" id="pedidos">
+            <h2>Pedidos registrados</h2>
+
+            <div class="busqueda">
+                <input type="search" id="buscar"
+                    placeholder="Buscar por nombre del cliente...">
+            </div>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>N.º</th>
+                            <th>Cliente</th>
+                            <th>Pedido</th>
+                            <th>Entrega</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaPedidos"></tbody>
+                </table>
+            </div>
+
+            <p id="sinPedidos" class="vacio">
+                Todavía no hay pedidos registrados.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Floridulce · Proyecto académico de Ingeniería de Software</p>
+    </footer>
+
+    <script src="./src/main.js"></script>
 </body>
 </html>
