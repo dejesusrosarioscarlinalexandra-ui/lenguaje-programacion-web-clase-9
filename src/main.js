@@ -142,13 +142,20 @@ function configurarFormulario() {
         }
 
         if (pedidoEditar) {
-            pedidoEditar = {
-                ...pedidoEditar,
-                ...datos,
-                total: obtenerTotal(precio, descuento)
-            };
+    const indice = pedidos.findIndex(p => p.id === idEditar);
 
-            alert("El pedido se actualizó correctamente.");
+    if (indice === -1) {
+        alert("No se encontró el pedido que deseas actualizar.");
+        return;
+    }
+
+    pedidos[indice] = {
+        ...pedidos[indice],
+        ...datos,
+        total: obtenerTotal(precio, descuento)
+    };
+
+    alert("El pedido se actualizó correctamente.");
 
         } else {
             const nuevoPedido = {
