@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floridulce | Consultar pedidos</title>
+    <link rel="stylesheet" href="./src/style.css">
+    <script src="./src/main.js" defer></script>
+</head>
+<body data-page="pedidos">
+
+    <header class="encabezado">
+        <div class="contenedor-header">
+            <h1>Floridulce</h1>
+            <p>Sistema de gestión y control de pedidos</p>
+        </div>
+    </header>
+
+    <nav class="menu">
+        <a href="index.html">Inicio</a>
+        <a href="registrar.html">Registrar pedido</a>
+        <a href="pedidos.html" class="activo">Consultar pedidos</a>
+    </nav>
+
+    <main class="contenedor">
+
+        <section class="seccion-pedidos">
+            <div class="encabezado-seccion">
+                <div>
+                    <h2>Consultar pedidos</h2>
+                    <p>Administra y consulta los pedidos registrados.</p>
+                </div>
+
+                <a href="registrar.html" class="boton">
+                    Nuevo pedido
+                </a>
+            </div>
+
+            <div class="grupo">
+                <label for="buscador">Buscar pedido por cliente o número</label>
+                <input
+                    type="search"
+                    id="buscador"
+                    placeholder="Escribe el nombre o número del pedido..."
+                >
+            </div>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaPedidos">
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="mensajeVacio" class="mensaje-vacio" hidden>
+                No hay pedidos registrados.
+            </p>
+        </section>
+
+    </main>
+
+    <dialog id="dialogoDetalles" class="dialogo">
+        <div class="dialogo-contenido">
+            <h2>Detalles del pedido</h2>
+            <div id="contenidoDetalles"></div>
+
+            <button type="button" class="boton" id="cerrarDetalles">
+                Cerrar
+            </button>
+        </div>
+    </dialog>
+
+    <footer>
+        <p>Floridulce © 2026 - Sistema de gestión de pedidos</p>
+    </footer>
+
+</body>
+</html>

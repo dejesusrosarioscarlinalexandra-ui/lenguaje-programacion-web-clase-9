@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floridulce | Registrar pedido</title>
+    <link rel="stylesheet" href="./src/style.css">
+    <script src="./src/main.js" defer></script>
+</head>
+<body data-page="registrar">
+
+    <header class="encabezado">
+        <div class="contenedor-header">
+            <h1>Floridulce</h1>
+            <p>Sistema de gestión y control de pedidos</p>
+        </div>
+    </header>
+
+    <nav class="menu">
+        <a href="index.html">Inicio</a>
+        <a href="registrar.html" class="activo">Registrar pedido</a>
+        <a href="pedidos.html">Consultar pedidos</a>
+    </nav>
+
+    <main class="contenedor">
+        <section class="formulario-contenedor">
+            <h2 id="tituloFormulario">Registrar nuevo pedido</h2>
+            <p>Complete los datos para registrar un pedido.</p>
+
+            <form id="formularioPedido">
+
+                <div class="grupo">
+                    <label for="cliente">Nombre del cliente</label>
+                    <input type="text" id="cliente" required>
+                </div>
+
+                <div class="grupo">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" required>
+                </div>
+
+                <div class="grupo">
+                    <label for="direccion">Dirección de entrega</label>
+                    <input type="text" id="direccion" required>
+                </div>
+
+                <div class="grupo">
+                    <label for="descripcion">Descripción del pedido</label>
+                    <textarea id="descripcion" rows="3" required></textarea>
+                </div>
+
+                <div class="fila">
+                    <div class="grupo">
+                        <label for="fecha">Fecha de entrega</label>
+                        <input type="date" id="fecha" required>
+                    </div>
+
+                    <div class="grupo">
+                        <label for="hora">Hora de entrega</label>
+                        <input type="time" id="hora" required>
+                    </div>
+                </div>
+
+                <div class="fila">
+                    <div class="grupo">
+                        <label for="precio">Precio del pedido (RD$)</label>
+                        <input type="number" id="precio" min="0.01" step="0.01" required>
+                    </div>
+
+                    <div class="grupo">
+                        <label for="descuento">Descuento (RD$)</label>
+                        <input type="number" id="descuento" min="0" step="0.01" value="0">
+                    </div>
+                </div>
+
+                <div class="grupo">
+                    <label for="empleado">Empleado responsable</label>
+                    <input type="text" id="empleado" required>
+                </div>
+
+                <div class="fila">
+                    <div class="grupo">
+                        <label for="estado">Estado del pedido</label>
+                        <select id="estado" required>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="En preparación">En preparación</option>
+                            <option value="Listo">Listo</option>
+                            <option value="Entregado">Entregado</option>
+                            <option value="Cancelado">Cancelado</option>
+                        </select>
+                    </div>
+
+                    <div class="grupo">
+                        <label for="metodoPago">Método de pago</label>
+                        <select id="metodoPago" required>
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Transferencia">Transferencia</option>
+                            <option value="Tarjeta">Tarjeta</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grupo">
+                    <label for="estadoPago">Estado del pago</label>
+                    <select id="estadoPago" required>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Abono">Abono</option>
+                        <option value="Pagado">Pagado</option>
+                    </select>
+                </div>
+
+                <div class="grupo total-preview">
+                    <label>Total a pagar:</label>
+                    <p id="totalCalculado">RD$ 0.00</p>
+                </div>
+
+                <div class="botones-formulario">
+                    <button type="submit" class="boton" id="botonGuardar">
+                        Guardar pedido
+                    </button>
+
+                    <button type="button" class="boton boton-secundario" id="botonLimpiar">
+                        Limpiar formulario
+                    </button>
+                </div>
+
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>Floridulce © 2026 - Sistema de gestión de pedidos</p>
+    </footer>
+
+</body>
+</html>
